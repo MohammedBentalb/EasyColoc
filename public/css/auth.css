@@ -1,0 +1,26 @@
+body {
+    font-family: 'Inter', sans-serif;
+    min-height: max(884px, 100dvh);
+}
+
+[v-cloak] { 
+    display: none; 
+}
+
+.form-input:focus {
+    border-color: #4848e5 !important;
+    ring-color: #4848e5 !important;
+    outline: none;
+}
+
+.auth-page-body {
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
+}
+
+.auth-card {
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
+}
