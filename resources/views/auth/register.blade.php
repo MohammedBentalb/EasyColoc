@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
     <link href="{{ asset('css/auth.css') }}" rel="stylesheet"/>
 </head>
-<body class="bg-background-light dark:bg-background-dark min-h-screen flex flex-col items-center justify-center p-4 auth-page-body">
+<body class="bg-background-light min-h-screen flex flex-col items-center justify-center p-4 auth-page-body">
     <div class="w-full max-w-md bg-white border border-zinc-200 rounded-xl shadow-sm p-6 sm:p-8 transform transition-all auth-card font-display">
         <div class="flex flex-col space-y-2 text-center mb-8">
             <div class="flex items-center justify-center mb-2">
@@ -23,7 +23,7 @@
                 </div>
             </div>
             <h1 class="text-2xl font-semibold tracking-tight">Create an account</h1>
-            <p class="text-sm text-zinc-500 dark:text-zinc-400">
+            <p class="text-sm text-zinc-500">
                 Enter your details below to get started
             </p>
         </div>
@@ -37,15 +37,15 @@
                             <span class="material-symbols-outlined text-zinc-400 group-hover:text-primary transition-colors">
                                 add_a_photo
                             </span>
-                            <span class="mt-1 text-[10px] font-medium text-zinc-500 dark:text-zinc-400">Upload</span>
+                            <span class="mt-1 text-[10px] font-medium text-zinc-500">Upload</span>
                         </div>
                         <img id="image-preview" src="" class="hidden absolute inset-0 w-full h-full object-cover" alt="Preview">
                         <input accept="image/*" class="hidden" id="profile-upload" name="image" type="file"/>
                     </label>
                 </div>
                 <div class="text-center">
-                    <p class="text-xs font-medium text-zinc-700 dark:text-zinc-300">Profile Picture</p>
-                    <p class="text-[10px] text-zinc-500 dark:text-zinc-500">Optional: JPG or PNG</p>
+                    <p class="text-xs font-medium text-zinc-700">Profile Picture</p>
+                    <p class="text-[10px] text-zinc-500">Optional: JPG or PNG</p>
                     <p id="image-error" class="hidden text-[10px] text-red-500 mt-1"></p>
                     @error('image')
                         <p class="text-xs text-red-500 mt-1 text-center">{{ $message }}</p>
@@ -53,7 +53,7 @@
                 </div>
             </div>
             <div class="space-y-2">
-                <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 dark:text-zinc-300" for="username">
+                <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="username">
                     Username
                 </label>
                 <input class="flex h-10 w-full rounded-md border border-zinc-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all" 
@@ -68,7 +68,7 @@
                 @enderror
             </div>
             <div class="space-y-2">
-                <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 dark:text-zinc-300" for="email">
+                <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="email">
                     Email Address
                 </label>
                 <input class="flex h-10 w-full rounded-md border border-zinc-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all font-display" 
@@ -83,7 +83,7 @@
                 @enderror
             </div>
             <div class="space-y-2">
-                <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 dark:text-zinc-300" for="password">
+                <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="password">
                     Password
                 </label>
                 <div class="relative">
@@ -99,7 +99,7 @@
                 </div>
             </div>
             <div class="space-y-2">
-                <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 dark:text-zinc-300" for="confirm-password">
+                <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="confirm-password">
                     Confirm Password
                 </label>
                 <input class="flex h-10 w-full rounded-md border border-zinc-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all" 
@@ -119,10 +119,10 @@
         </form>
         <div class="relative my-6">
             <div class="absolute inset-0 flex items-center">
-                <span class="w-full border-t border-zinc-200 dark:border-zinc-800"></span>
+                <span class="w-full border-t border-zinc-200"></span>
             </div>
             <div class="relative flex justify-center text-xs uppercase">
-                <span class="bg-white px-2 text-zinc-500 dark:text-zinc-400">
+                <span class="bg-white px-2 text-zinc-500">
                     Or continue with
                 </span>
             </div>
@@ -141,7 +141,7 @@
                 Google
             </button>
         </div>
-        <p class="px-8 text-center text-sm text-zinc-500 dark:text-zinc-400 mt-8">
+        <p class="px-8 text-center text-sm text-zinc-500 mt-8">
             Already have an account? 
             <a class="font-medium text-slate-500 underline underline-offset-4 hover:text-primary transition-colors" href="{{ route('login') }}">
                 Log in
@@ -149,7 +149,7 @@
         </p>
     </div>
     <div class="mt-8 text-center max-w-md">
-        <p class="text-[12px] text-zinc-400 dark:text-zinc-500 leading-relaxed">
+        <p class="text-[12px] text-zinc-400 leading-relaxed">
             By clicking continue, you agree to our 
             <a class="underline hover:text-primary transition-colors" href="#">Terms of Service</a> 
             and 

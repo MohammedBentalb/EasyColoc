@@ -1,1 +1,3 @@
-import './bootstrap';
+import "./bootstrap";
+import "./sidebar";
+import "./colocation-form";

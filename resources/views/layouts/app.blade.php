@@ -22,14 +22,43 @@
     </style>
     @stack('styles')
 </head>
-<body class="bg-white text-slate-900 font-sans antialiased">
-    @yield('header')
+<body class="bg-background-light text-slate-900 font-sans antialiased">
+    @if(request()->routeIs('home', 'login', 'register'))
+        @yield('header')
+        <main>
+            @yield('content')
+        </main>
+        @if(request()->routeIs('home'))
+            @include('partials.footer')
+        @endif
+    @else
+        <div class="flex min-h-screen">
+            <x-sidebar :user=$user/>
+            <div class="flex-1 flex flex-col min-w-0">
 
-    <main>
-        @yield('content')
-    </main>
+            <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 lg:px-8 sticky top-0 z-30">
+                    <div class="flex items-center gap-4">
+                        <button id="open-sidebar" class="lg:hidden p-2 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors">
+                            <span class="material-symbols-outlined">menu</span>
+                        </button>
+                        <div class="hidden lg:flex items-center gap-2">
+                             <a href="@yield('page_link', '/colocations')" class="text-xs font-bold text-slate-400 uppercase tracking-widest">
+                                @yield('page_category', 'Platform')
+                            </a>
+                             <span class="text-slate-300">/</span>
+                             <span class="text-sm font-bold text-slate-900">
+                                @yield('title')
+                             </span>
+                        </div>
+                    </div>  
+                </header>
 
-    @include('partials.footer')
+                <main class="flex-1 overflow-x-hidden">
+                    @yield('content')
+                </main>
+            </div>
+        </div>
+    @endif
 
     @stack('scripts')
 </body>

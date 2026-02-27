@@ -17,5 +17,8 @@ class Category extends Model
         return $this->belongsTo(Colocation::class, 'colocation_id');
     }
 
+    public function depenses(){
+        return $this->hasMany(Depense::class, 'category_id');
+    }
     
 }
