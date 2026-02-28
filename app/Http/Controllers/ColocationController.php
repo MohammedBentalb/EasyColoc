@@ -31,7 +31,17 @@ class ColocationController extends Controller {
         $users = $colocation->users;
         $role = $user->getActicveColocation()->first()->pivot->role;
         $activeUsers = $colocation->users()->wherePivot('status', ColocationStatus::active->value)->count();
-        return view('colocations.index', compact('colocation', 'users', 'role', 'activeUsers'));
+        
+        $myBalanceData = $this->balanceCalculator->balance($user);
+        $myBalance = $myBalanceData['solde'];
+        $myTotalPaid = $myBalanceData['totalPaid'];
+
+        foreach ($users as $roommate) {
+            $roommateData = $this->balanceCalculator->balance($roommate);
+            $roommate->calculated_balance = $roommateData['solde'];
+        }
+
+        return view('colocations.index', compact('colocation', 'users', 'role', 'activeUsers', 'myBalance', 'myTotalPaid'));
     }
 
     public function store(ColocationRequest $request){

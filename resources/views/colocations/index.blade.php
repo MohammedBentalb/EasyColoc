@@ -72,10 +72,24 @@
             <div class="rounded border border-slate-200 bg-white p-5">
                 <p class="text-xs font-medium uppercase tracking-wider text-slate-500">My Balance</p>
                 <div class="mt-2 flex items-baseline gap-1">
-                    <span class="text-2xl font-semibold tracking-tight text-rose-600">-450</span>
-                    <span class="text-sm font-medium text-rose-400">MAD</span>
+                    <span class="text-2xl font-semibold tracking-tight {{ $myBalance < 0 ? 'text-rose-600' : 'text-emerald-600' }}">
+                        {{ $myBalance > 0 ? '+' : '' }}{{ number_format($myBalance, 2) }}
+                    </span>
+                    <span class="text-sm font-medium {{ $myBalance < 0 ? 'text-rose-400' : 'text-emerald-400' }}">MAD</span>
                 </div>
-                <p class="mt-1 text-[11px] text-slate-400 uppercase tracking-widest font-bold text-rose-500/80">Action Needed</p>
+                @if($myBalance < 0)
+                    <p class="mt-1 text-[11px] text-slate-400 uppercase tracking-widest font-bold text-rose-500/80">Action Needed</p>
+                @else
+                    <p class="mt-1 text-[11px] text-slate-400 uppercase tracking-widest font-bold text-emerald-500/80">All settled up</p>
+                @endif
+            </div>
+            <div class="rounded border border-slate-200 bg-white p-5">
+                <p class="text-xs font-medium uppercase tracking-wider text-slate-500">My Contributions</p>
+                <div class="mt-2 flex items-baseline gap-1">
+                    <span class="text-2xl font-semibold tracking-tight">{{ number_format($myTotalPaid, 2) }}</span>
+                    <span class="text-sm font-medium text-slate-400">MAD</span>
+                </div>
+                <p class="mt-1 text-[11px] text-slate-400">Total Money Out</p>
             </div>
             <div class="rounded border border-slate-200 bg-white p-5">
                 <p class="text-xs font-medium uppercase tracking-wider text-slate-500">Group Members</p>
@@ -85,7 +99,7 @@
                 </div>
                 <p class="mt-1 text-[11px] text-slate-400">2 pending invites</p>
             </div>
-            <div class="rounded border border-slate-200 bg-white p-5">
+            <div class="rounded border border-slate-200 bg-white p-5 hidden lg:block">
                 <p class="text-xs font-medium uppercase tracking-wider text-slate-500">Active Tasks</p>
                 <div class="mt-2 flex items-baseline gap-1">
                     <span class="text-2xl font-semibold tracking-tight">8</span>
@@ -151,9 +165,9 @@
                                         </td>
                                         <td class="px-6 py-4">
                                             <div class="font-bold tabular-nums">
-                                                <span class="{{ $roommate->balance >= 0 ? 'text-emerald-600' : 'text-rose-600' }}">
-                                                    {{ $roommate->balance >= 0 ? '+' : '' }}{{ number_format($roommate->balance, 2) }} 
-                                                    <span class="text-[10px] {{ $roommate->balance >= 0 ? 'text-emerald-400/80' : 'text-rose-400/80' }} font-medium ml-0.5 uppercase">MAD</span>
+                                                <span class="{{ $roommate->calculated_balance >= 0 ? 'text-emerald-600' : 'text-rose-600' }}">
+                                                    {{ $roommate->calculated_balance > 0 ? '+' : '' }}{{ number_format($roommate->calculated_balance, 2) }} 
+                                                    <span class="text-[10px] {{ $roommate->calculated_balance >= 0 ? 'text-emerald-400/80' : 'text-rose-400/80' }} font-medium ml-0.5 uppercase">MAD</span>
                                                 </span>
                                             </div>
                                         </td>
