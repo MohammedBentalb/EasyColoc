@@ -1,4 +1,4 @@
-@extends('layouts.app',['user' => $user])
+@extends('layouts.app')
 
 @section('title', 'Your Colocations - ColocSaaS')
 

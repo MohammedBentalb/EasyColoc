@@ -25,7 +25,10 @@ class User extends Authenticatable
         'email',
         'password',
         'image',
-        'role_id'
+        'role_id',
+        'is_admin',
+        'banned',
+        'reputation'
     ];
 
     /**
@@ -69,11 +72,15 @@ class User extends Authenticatable
     public function settlements(){
         return $this->hasMany(Settlement::class);
     }
-
-    public function getActicveColocation(){
+    public function getActiveColocation(){
         return $this->colocations()->wherePivot('status', ColocationStatus::active->value);
     }
-    public function getInActicveColocations(){
+    public function getInActiveColocations(){
         return $this->colocations()->wherePivot('status', ColocationStatus::inActive->value);
+    }
+
+    public function getUserColocationRole(){
+        $coloc = $this->getActiveColocation()->first();
+        return $coloc ? $coloc->pivot->role : null;
     }
 }

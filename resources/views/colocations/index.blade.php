@@ -34,13 +34,13 @@
                 </p>
             </div>
             <div class="flex gap-3">
-                @if ($role == 'ROLE_OWNER' && $activeUsers = 1 || $role != 'ROLE_OWNER' )
+                @if ($role != 'ROLE_OWNER' || ($role == 'ROLE_OWNER' && $activeUsers <= 1))
                 <form action="{{ route('colocation.quite', $colocation->id) }}" method="POST">
                     @csrf
                     @method('PATCH')
                     <button type="submit"
                         class="flex text-red-400 items-center gap-2 rounded border border-red-200 bg-red-100 px-4 py-2 text-sm font-medium hover:bg-slate-50">
-                        Quiter
+                        Quit Colocation
                     </button>
                 </form>
                 @elseif ($role == 'ROLE_OWNER')
@@ -139,7 +139,7 @@
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-slate-100">
-                                    @foreach($users as $roommate)
+                                    @foreach($colocationUsers as $roommate)
                                     <tr class="hover:bg-slate-50/80 transition-colors group">
                                         <td class="px-6 py-4">
                                             <div class="flex items-center gap-3">
@@ -218,16 +218,16 @@
                 <section class="rounded border border-slate-200 bg-white p-4">
                     <div class="mb-4 flex items-center justify-between">
                         <h3 class="text-sm font-semibold">Housemates</h3>
-                        <span class="text-[10px] font-bold text-primary uppercase">{{ count($users) }} ONLINE</span>
+                        <span class="text-[10px] font-bold text-primary uppercase">{{ count($colocationUsers) }} ONLINE</span>
                     </div>
                     <div class="space-y-3">
-                        @foreach($users as $user)
+                        @foreach($colocationUsers as $u)
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-2">
-                                <img alt="{{ $user->username }}" class="h-8 w-8 rounded-full border border-slate-100" src="https://ui-avatars.com/api/?name={{ urlencode($user->username) }}&background=random"/>
+                                <img alt="{{ $u->username }}" class="h-8 w-8 rounded-full border border-slate-100" src="https://ui-avatars.com/api/?name={{ urlencode($u->username) }}&background=random"/>
                                 <div>
-                                    <p class="text-xs font-medium">{{ $user->username }}</p>
-                                    <p class="text-[10px] text-slate-500 uppercase">{{ $user->pivot->role }}</p>
+                                    <p class="text-xs font-medium">{{ $u->uname }}</p>
+                                    <p class="text-[10px] text-slate-500 uppercase">{{ $u->pivot->role }}</p>
                                 </div>
                             </div>
                             <div class="h-1.5 w-1.5 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.4)]"></div>

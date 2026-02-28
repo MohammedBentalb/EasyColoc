@@ -32,7 +32,7 @@ class DepenseController extends Controller {
         }
 
         $expenses = $query->paginate(10)->withQueryString();
-        $totalUsers = $user->getActicveColocation()->first()->users->count();
+        $totalUsers = $user->getActiveColocation()->first()->users->count();
         return view('expenses.index', ['user' => $request->user(), 'colocation' => $colocation, 'expenses' => $expenses, 'filter' => $filter, 'totalUsers' => $totalUsers]);
     }
 
@@ -83,6 +83,11 @@ class DepenseController extends Controller {
             'depense_id' => $depense->id,
             'user_id' => $user->id
         ]);
+
+        $totalSettled = $depense->settlements()->sum('amount');
+        if (abs($totalSettled - $depense->amount) < 0.01) {
+            $depense->update(['status' => DepenseStatus::paid->value]);
+        }
 
         return back()->with('success', "Expense '{$depense->title}' has been paid successfully.");
     }

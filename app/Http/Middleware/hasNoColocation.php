@@ -14,7 +14,7 @@ class hasNoColocation
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
     public function handle(Request $request, Closure $next): Response {
-        if(!$request->user()->getActicveColocation()->first()) return $next($request);
+        if(!$request->user()->getActiveColocation()->first()) return $next($request);
         return redirect('/colocations')->with('error', 'In order to create a collection, you must exit the curent one first ');
     }
 }

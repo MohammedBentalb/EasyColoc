@@ -2,8 +2,8 @@
 
 @section('title', 'Category Management - ColocSaaS')
 
-@section('page_category', $user->getActicveColocation()->first()->name)
-@section('page_link', "/colocations/{$user->getActicveColocation()->first()->id}")
+@section('page_category', $user->getActiveColocation()->first()->name)
+@section('page_link', "/colocations/{$user->getActiveColocation()->first()->id}")
 
 @section('content')
 <div class="px-4 py-8 lg:px-12 max-w-[1000px] mx-auto">
@@ -29,7 +29,7 @@
                         Create labels to organize your shared household costs.
                     </p>
                 </div>
-                <form action="{{ route('categories.create', $user->getActicveColocation()->first()->id) }}" method="POST" class="flex gap-3">
+                <form action="{{ route('categories.create', $user->getActiveColocation()->first()->id) }}" method="POST" class="flex gap-3">
                     @csrf
                     <div class="relative flex-1">
                         <input
@@ -57,7 +57,7 @@
                 </div>
                 <div class="bg-white border border-slate-200 rounded-lg divide-y divide-slate-100 overflow-hidden shadow-sm">
                     @foreach ($categories as $category)                    
-                    <form action="{{ route('categories.delete',['colocation' => $user->getActicveColocation()->first()->id , 'category' => $category->id]) }}" method="POST" class="flex items-center justify-between p-4 group">
+                    <form action="{{ route('categories.delete',['colocation' => $user->getActiveColocation()->first()->id , 'category' => $category->id]) }}" method="POST" class="flex items-center justify-between p-4 group">
                         @csrf
                         @method('DELETE')
                         <div class="flex items-center gap-3">

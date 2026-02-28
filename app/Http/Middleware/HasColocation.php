@@ -14,7 +14,9 @@ class HasColocation
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
     public function handle(Request $request, Closure $next): Response {
-        if($request->user()->getActicveColocation()->first()) return $next($request);
+        if($request->user() && $request->user()->getActiveColocation()->first()) {
+            return $next($request);
+        }
         return redirect('/colocations')->with('error', 'Access Denied');
     }
 }

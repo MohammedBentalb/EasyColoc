@@ -16,7 +16,7 @@ class BalanceCalculator
     }
 
     public function balance($user) : array {
-        $colocation = $user->getActicveColocation()->first();
+        $colocation = $user->getActiveColocation()->first();
         if (!$colocation) return ['totalPaid' => 0, 'share' => 0, 'solde' => 0];
         
         $usersCount = $colocation->users()->count();

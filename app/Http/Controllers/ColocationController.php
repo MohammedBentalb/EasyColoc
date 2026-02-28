@@ -21,16 +21,17 @@ class ColocationController extends Controller {
 
     public function home(Request $request) {
         $user = $request->user();
-        $activeColocation = $user->getActicveColocation()->first();
-        $inActiveColocations = $user->getInActicveColocations()->get();
+        $activeColocation = $user->getActiveColocation()->first();
+        $inActiveColocations = $user->getInActiveColocations()->get();
         return view('colocations.home', compact('activeColocation', 'inActiveColocations', 'user'));
     }
 
     public function index(Request $request, Colocation $colocation) {
         $user = $request->user();
         $users = $colocation->users;
-        $role = $user->getActicveColocation()->first()->pivot->role;
+        $role = $user->getActiveColocation()->first()->pivot->role;
         $activeUsers = $colocation->users()->wherePivot('status', ColocationStatus::active->value)->count();
+        $colocationUsers = $colocation->users()->wherePivot('status', ColocationStatus::active->value)->get();
         
         $myBalanceData = $this->balanceCalculator->balance($user);
         $myBalance = $myBalanceData['solde'];
@@ -41,7 +42,7 @@ class ColocationController extends Controller {
             $roommate->calculated_balance = $roommateData['solde'];
         }
 
-        return view('colocations.index', compact('colocation', 'users', 'role', 'activeUsers', 'myBalance', 'myTotalPaid'));
+        return view('colocations.index', compact('user', 'colocation', 'users', 'role', 'activeUsers', 'myBalance', 'myTotalPaid', 'colocationUsers'));
     }
 
     public function store(ColocationRequest $request){
@@ -59,7 +60,7 @@ class ColocationController extends Controller {
     public function invite(Request $request, Colocation $colocation) {
         $data = $request->only('email', 'user_id');
         $user = $request->user();
-        $colocation = $user->getActicveColocation()->first();            
+        $colocation = $user->getActiveColocation()->first();            
         $payload = ['colocation_id' => $colocation->id, 'email' => $data['email']];
         $token = $this->JWTManager->generate($payload, (new Carbon())->addDay()->timestamp);
         $url = url("/colocations/$token/add");
@@ -70,7 +71,7 @@ class ColocationController extends Controller {
         $payload = $this->JWTManager->decode($token);
         $colocation = Colocation::where('id', $payload->colocation_id)->first();
         $user = User::where('email', $payload->email)->first();
-        $activeColection = $user->getActicveColocation()->first();
+        $activeColection = $user->getActiveColocation()->first();
         if($activeColection) return redirect('/colocations/')->with(['success' => 'you are already in an active collection']);
         $membership = Membership::where('user_id', $user->id)->where('colocation_id', $colocation->id)->orderByDesc('updated_at')->first();
 
@@ -88,25 +89,47 @@ class ColocationController extends Controller {
     public function quite(Request $request, Colocation $colocation) {
         $user = $request->user();
         $membership = Membership::where('user_id', $user->id)->where('colocation_id', $colocation->id)->first();
-        $activeColocation = $user->getActicveColocation()->first();
+        $activeColocation = $user->getActiveColocation()->first();
         if($colocation->id != $activeColocation->id ||  $membership->role == UsersColectionRoles::owner->value && $colocation->users()->wherePivot('status', ColocationStatus::active->value)->count() > 1) return back()->withErrors(['error' => "You can't leave untile the colocation is empty"]);
+        
+        $hasDebt = Depense::whereHas('category', function($q) use($colocation){
+            $q->where('colocation_id', $colocation->id);
+        })->whereDoesntHave('settlements', function($q) use($user){
+            $q->where('user_id', $user->id);
+        })->exists();
+
+        if ($hasDebt) {
+            $user->decrement('reputation');
+        } else {
+            $user->increment('reputation');
+        }
+
         $membership->status = ColocationStatus::inActive->value;
         $membership->save();
         return redirect('/colocations');
     }
 
-    public function cancesl(Request $request, Colocation $colocation) {
-        $user = $request->user();
-        $membership = Membership::where('colocation_id', $colocation->id)->where('user_id', $user->id)->first(); 
-        if($membership->role != UsersColectionRoles::owner->value) return back()->withErrors(['error' => 'Unauthorized action']);
-        $colocation->delete();
-        return redirect('/colocations');
-    }
     public function cancel(Request $request, Colocation $colocation) {
         $user = $request->user();
         $role = $user->getUserColocationRole();
         if($role != UsersColectionRoles::owner->value) return back()->withErrors('error', 'Action denied'); 
-        $memberships = Membership::where('colocation_id', $colocation->id)->where('role', '!=', UsersColectionRoles::owner->value)->update(['status' => ColocationStatus::inActive->value]);
+        
+        $members = $colocation->users()->wherePivot('role', '!=', UsersColectionRoles::owner->value)->wherePivot('status', ColocationStatus::active->value)->get();
+        foreach ($members as $member) {
+            $hasDebt = Depense::whereHas('category', function($q) use($colocation){
+                $q->where('colocation_id', $colocation->id);
+            })->whereDoesntHave('settlements', function($q) use($member){
+                $q->where('user_id', $member->id);
+            })->exists();
+
+            if ($hasDebt) {
+                $member->decrement('reputation');
+            } else {
+                $member->increment('reputation');
+            }
+        }
+
+        Membership::where('colocation_id', $colocation->id)->where('role', '!=', UsersColectionRoles::owner->value)->update(['status' => ColocationStatus::inActive->value]);
         return back()->with('success', 'all users have been removed');
     }
 }

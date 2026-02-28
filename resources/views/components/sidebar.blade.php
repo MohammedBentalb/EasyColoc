@@ -1,4 +1,3 @@
-@props(['user' => null])
 <aside 
     id="sidebar-container"
     class="relative"
@@ -9,12 +8,10 @@
         class="fixed inset-0 z-40 bg-slate-900/50 backdrop-blur-sm lg:hidden hidden opacity-0 transition-opacity duration-300"
     ></div>
 
-    <!-- Sidebar Wrapper -->
     <div 
         id="sidebar-content"
         class="fixed inset-y-0 left-0 z-50 w-72 bg-white border-r border-slate-200 transform -translate-x-full transition-transform duration-300 ease-in-out lg:sticky lg:top-0 lg:h-screen lg:flex flex-col lg:translate-x-0"
     >
-        <!-- Logo -->
         <div class="h-16 flex items-center px-6 border-b border-slate-100">
             <a href="{{ route('home') }}" class="flex items-center gap-3 text-primary">
                 <div class="size-8 flex items-center justify-center rounded-lg bg-primary text-white shadow-sm shadow-primary/20">
@@ -29,7 +26,6 @@
             </button>
         </div>
 
-        <!-- Navigation -->
         <nav class="flex-1 overflow-y-auto py-6 px-4 space-y-1">
             <p class="px-2 mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Main Menu</p>
             
@@ -38,22 +34,27 @@
                 <span class="material-symbols-outlined !text-[20px] {{ request()->routeIs('colocations.home') ? 'text-primary' : 'text-slate-400 group-hover:text-slate-600' }}">dashboard</span>
                 Colocations
             </a>
-            @if ($user->getActicveColocation()->first())
             
-            <a href="{{ route('expenses.index', $user->getActicveColocation()->first()->id) }}" 
+            @php
+                $activeColoc = auth()->user() ? auth()->user()->getActiveColocation()->first() : null;
+            @endphp
+            
+            @if ($activeColoc)
+            <a href="{{ route('expenses.index', $activeColoc->id) }}" 
                class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all group {{ request()->routeIs('expenses.index') ? 'bg-primary/5 text-primary' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">
                 <span class="material-symbols-outlined !text-[20px] {{ request()->routeIs('expenses.index') ? 'text-primary' : 'text-slate-400 group-hover:text-slate-600' }}">payments</span>
                 Expenses
             </a>
-            @if ($user->getUserColocationRole() == 'ROLE_OWNER')
-            <a href="#" 
+
+            @if (auth()->user() && auth()->user()->getUserColocationRole() == 'ROLE_OWNER')
+            <a href="{{ route('colocations.index', $activeColoc->id) }}" 
                class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all group text-slate-600 hover:bg-slate-50 hover:text-slate-900">
                 <span class="material-symbols-outlined !text-[20px] text-slate-400 group-hover:text-slate-600">group</span>
                 Members
             </a>
             @endif
 
-            <a href="{{ route('categories', $user->getActicveColocation()->first()->id) }}" 
+            <a href="{{ route('categories', $activeColoc->id) }}" 
                 class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all group {{ request()->routeIs('categories') ? 'bg-primary/5 text-primary' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">
                 <span class="material-symbols-outlined !text-[20px] {{ request()->routeIs('categories') ? 'text-primary' : 'text-slate-400 group-hover:text-slate-600' }}">category</span>
                 Categories
@@ -62,15 +63,16 @@
 
             <div class="pt-4 mt-4 border-t border-slate-100">
                 <p class="px-2 mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Account</p>
-                <a href="#" 
-                   class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all group text-slate-600 hover:bg-slate-50 hover:text-slate-900">
-                    <span class="material-symbols-outlined !text-[20px] text-slate-400 group-hover:text-slate-600">settings</span>
-                    Settings
+                <a href="{{ route('profile') }}" 
+                   class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all group {{ request()->routeIs('profile') ? 'bg-primary/5 text-primary' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">
+                    <span class="material-symbols-outlined !text-[20px] {{ request()->routeIs('profile') ? 'text-primary' : 'text-slate-400 group-hover:text-slate-600' }}">person</span>
+                    My Profile
                 </a>
-                @if(auth()->user()->is_admin)
+                
+                @if(auth()->user() && auth()->user()->is_admin)
                 <a href="{{ route('users.index') }}" 
                    class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all group {{ request()->routeIs('users.index') ? 'bg-primary/5 text-primary' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">
-                    <span class="material-symbols-outlined !text-[20px] {{ request()->routeIs('users.index') ? 'text-primary' : 'text-slate-400 group-hover:text-slate-600' }}">group</span>
+                    <span class="material-symbols-outlined !text-[20px] {{ request()->routeIs('users.index') ? 'text-primary' : 'text-slate-400 group-hover:text-slate-600' }}">admin_panel_settings</span>
                     Manage Users
                 </a>
                 @endif

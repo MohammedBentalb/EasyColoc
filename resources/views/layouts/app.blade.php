@@ -33,7 +33,7 @@
         @endif
     @else
         <div class="flex min-h-screen">
-            <x-sidebar :user=$user/>
+            <x-sidebar />
             <div class="flex-1 flex flex-col min-w-0">
 
             <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 lg:px-8 sticky top-0 z-30">
