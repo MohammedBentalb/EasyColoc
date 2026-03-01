@@ -69,7 +69,7 @@
                 </div>
                 <div class="group relative bg-white border border-slate-200 rounded-xl overflow-hidden">
                     <div class="flex flex-col md:flex-row">
-                        <div class="w-full md:w-1/3 h-48 md:h-auto bg-center bg-cover" style="background-image: url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80');"></div>
+                        <div class="w-full md:w-1/3 h-48 md:h-auto bg-center bg-cover" style="background-image: url('{{ $activeColocation->image ? asset('storage/' . $activeColocation->image) : 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80' }}');"></div>
                         <div class="flex-1 p-6 flex flex-col justify-between space-y-4">
                             <div class="space-y-1">
                                 <div class="flex items-center justify-between">
@@ -90,7 +90,7 @@
                                 </div>
                                 <div>
                                     <p class="text-[10px] font-semibold text-slate-400 uppercase">Members</p>
-                                    <p class="text-lg font-bold text-slate-900">{{ count($activeColocation->users) }} <span class="text-xs font-medium">Active</span></p>
+                                    <p class="text-lg font-bold text-slate-900">{{ $activeUsers }} <span class="text-xs font-medium">Active</span></p>
                                 </div>
                                 <div class="hidden lg:block">
                                     <p class="text-[10px] font-semibold text-slate-400 uppercase">Active Since</p>
@@ -152,7 +152,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     @foreach ($inActiveColocations as $inactive)
                     <div class="flex items-center gap-4 p-4 bg-white border border-slate-200 rounded-lg hover:border-slate-300 transition-colors">
-                        <div class="size-14 rounded-lg bg-center bg-cover flex-shrink-0" style="background-image: url('https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=200&q=80');"></div>
+                        <div class="size-14 rounded-lg bg-center bg-cover flex-shrink-0" style="background-image: url('{{ $inactive->image ? asset('storage/' . $inactive->image) : 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=200&q=80' }}');"></div>
                         <div class="flex-1 min-w-0">
                             <h4 class="text-sm font-bold text-slate-900 truncate">{{ $inactive->name }}</h4>
                             <p class="text-xs text-slate-500">{{ $inactive->created_at->format('M y') }} — {{ $inactive->updated_at->format('M y') }}</p>

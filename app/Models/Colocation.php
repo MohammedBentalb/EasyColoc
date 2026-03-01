@@ -10,7 +10,7 @@ class Colocation extends Model {
     /** @use HasFactory<\Database\Factories\ColocationFactory> */
     use HasFactory, HasUuids;
 
-    protected $fillable = ['name', 'address', 'city'];
+    protected $fillable = ['name', 'address', 'city', 'image'];
 
     public function users(){
         return $this->belongsToMany(User::class, 'memberships', 'colocation_id', 'user_id')->using(Membership::class)->withPivot('role', 'status')->withTimestamps();

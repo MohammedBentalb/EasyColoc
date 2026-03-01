@@ -204,7 +204,7 @@
                 <section class="rounded border border-slate-200 bg-white p-4">
                     <h3 class="mb-3 text-sm font-semibold">Location</h3>
                     <div class="mb-3 h-32 w-full overflow-hidden rounded bg-slate-100">
-                        <img alt="City" class="h-full w-full object-cover grayscale opacity-80" src="https://images.unsplash.com/photo-1526772662000-3f88f10405ff?auto=format&fit=crop&w=400&q=80"/>
+                        <img alt="{{ $colocation->name }}" class="h-full w-full object-cover grayscale opacity-80" src="{{ $colocation->image ? asset('storage/' . $colocation->image) : 'https://images.unsplash.com/photo-1526772662000-3f88f10405ff?auto=format&fit=crop&w=400&q=80' }}"/>
                     </div>
                     <div class="space-y-2">
                         <p class="text-sm font-medium">{{ $colocation->city }}, Morocco</p>
@@ -220,17 +220,22 @@
                         <h3 class="text-sm font-semibold">Housemates</h3>
                         <span class="text-[10px] font-bold text-primary uppercase">{{ count($colocationUsers) }} ONLINE</span>
                     </div>
-                    <div class="space-y-3">
+                    <div class="space-y-4">
                         @foreach($colocationUsers as $u)
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-2">
-                                <img alt="{{ $u->username }}" class="h-8 w-8 rounded-full border border-slate-100" src="https://ui-avatars.com/api/?name={{ urlencode($u->username) }}&background=random"/>
+                        <div class="flex items-center justify-between group">
+                            <div class="flex items-center gap-3">
+                                <div class="relative">
+                                    <img alt="{{ $u->username }}" class="h-9 w-9 rounded-full border border-slate-100 shadow-sm object-cover" 
+                                         src="{{ $u->image ? asset('storage/' . $u->image) : 'https://ui-avatars.com/api/?name=' . urlencode($u->username) . '&background=4848e5&color=fff' }}"/>
+                                    <div class="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-white bg-green-500"></div>
+                                </div>
                                 <div>
-                                    <p class="text-xs font-medium">{{ $u->uname }}</p>
-                                    <p class="text-[10px] text-slate-500 uppercase">{{ $u->pivot->role }}</p>
+                                    <p class="text-xs font-bold text-slate-900 leading-tight">{{ $u->username }}</p>
+                                    <p class="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">
+                                        {{ str_replace('ROLE_', '', $u->pivot->role) }}
+                                    </p>
                                 </div>
                             </div>
-                            <div class="h-1.5 w-1.5 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.4)]"></div>
                         </div>
                         @endforeach
                     </div>

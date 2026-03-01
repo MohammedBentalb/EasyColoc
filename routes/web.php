@@ -30,12 +30,14 @@ Route::middleware('auth')->group(function() {
         Route::get('/colocations/{colocation}', [ColocationController::class, 'index'])->name('colocations.index');
         Route::post('/colocations/{colocation}/invite', [ColocationController::class, 'invite'])->name('colocations.invite');
         Route::patch('/colocations/quite/{colocation}/', [ColocationController::class, 'quite'])->name('colocation.quite');
-        Route::patch('/colocations/cancel/{colocation}/', [ColocationController::class, 'cancel'])->name('colocation.cancel');
-        Route::delete('/colocations/{colocation}/fire/{user}', [UserController::class, 'fireRoommate'])->name('colocation.fire');
         
-        Route::get('/categories/{colocation}', [CategoryController::class, 'index'])->name('categories');
-        Route::post('/categories/{colocation}', [CategoryController::class, 'store'])->name('categories.create');
-        Route::delete('/categories/{colocation}/{category}', [CategoryController::class, 'delete'])->name('categories.delete');
+        Route::middleware('owner')->group(function(){
+            Route::delete('/colocations/{colocation}/fire/{user}', [UserController::class, 'fireRoommate'])->name('colocation.fire');
+            Route::patch('/colocations/cancel/{colocation}/', [ColocationController::class, 'cancel'])->name('colocation.cancel');
+            Route::get('/categories/{colocation}', [CategoryController::class, 'index'])->name('categories');
+            Route::post('/categories/{colocation}', [CategoryController::class, 'store'])->name('categories.create');
+            Route::delete('/categories/{colocation}/{category}', [CategoryController::class, 'delete'])->name('categories.delete');
+        });
 
         Route::get('/colocations/{colocation}/expenses', [DepenseController::class, 'index'])->name('expenses.index');
         Route::get('/colocations/{colocation}/expenses/create', [DepenseController::class, 'create'])->name('expenses.create');

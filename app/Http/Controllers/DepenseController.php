@@ -40,13 +40,7 @@ class DepenseController extends Controller {
         $settlement = $depense->settlements()->where('user_id', $request->user()->id)->exists();
         $shareAmount = $depense->amount / $depense->category->colocation->users->count();
         $share = $settlement ? "paid" : $shareAmount;
-        return view('expenses.show', [ 
-            'user' => $request->user(), 
-            'depense' => $depense->load('user', 'category.colocation'), 
-            'share' => $share,
-            'shareAmount' => $shareAmount,
-            'isPaid' => $settlement
-        ]);
+        return view('expenses.show', ['user' => $request->user(),  'depense' => $depense->load('user', 'category.colocation'),  'share' => $share, 'shareAmount' => $shareAmount, 'isPaid' => $settlement]);
     }
 
     public function create(Request $request, Colocation $colocation) {
@@ -58,16 +52,12 @@ class DepenseController extends Controller {
 
     public function store(DepenseCreateRequest $request, Colocation $colocation) {
         $data = $request->validated();
-        $user = $request->user();
-        
         $depense = Depense::create([...$data, 'status' => DepenseStatus::pending->value]);
-        
         Settlement::create([
             'amount' => $depense->amount / $colocation->users()->count(),
             'depense_id' => $depense->id,
             'user_id' => $data['user_id']
         ]);
-        
         return redirect()->route('colocations.index', $colocation->id)->with('success', 'Expense created successfully.');
     }
     
@@ -85,9 +75,7 @@ class DepenseController extends Controller {
         ]);
 
         $totalSettled = $depense->settlements()->sum('amount');
-        if (abs($totalSettled - $depense->amount) < 0.01) {
-            $depense->update(['status' => DepenseStatus::paid->value]);
-        }
+        if (abs($totalSettled - $depense->amount) < 0.01) $depense->update(['status' => DepenseStatus::paid->value]);
 
         return back()->with('success', "Expense '{$depense->title}' has been paid successfully.");
     }

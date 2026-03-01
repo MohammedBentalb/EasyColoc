@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\ColocationStatus;
 use App\Http\Requests\ColocationRequest;
+use App\Http\Requests\InviteRequest;
 use App\Mail\TokenEmail;
+use App\Models\Category;
 use App\Models\Colocation;
 use App\Models\Depense;
 use App\Models\Membership;
@@ -23,7 +25,8 @@ class ColocationController extends Controller {
         $user = $request->user();
         $activeColocation = $user->getActiveColocation()->first();
         $inActiveColocations = $user->getInActiveColocations()->get();
-        return view('colocations.home', compact('activeColocation', 'inActiveColocations', 'user'));
+        $activeUsers = $activeColocation?->users()->wherePivot('status', ColocationStatus::active->value)->count();
+        return view('colocations.home', compact('activeColocation', 'inActiveColocations', 'user', 'activeUsers'));
     }
 
     public function index(Request $request, Colocation $colocation) {
@@ -46,10 +49,13 @@ class ColocationController extends Controller {
     }
 
     public function store(ColocationRequest $request){
-        $data = $request->only('name', 'address', 'city');        
+        $data = $request->validated(); 
+        dd($data);       
+        if ($request->hasFile('image')) $data['image'] = $request->file('image')->store('uploads/colocations', 'public');
         $user = $request->user();
         $colocation = Colocation::create($data);
         $colocation->users()->attach($user->id, ['role' => UsersColectionRoles::owner, 'status' => ColocationStatus::active->value]);
+        Category::create(['name' => 'default', 'colocation_id' => $colocation->id]);
         return redirect("/colocations/{$colocation->id}");
     }
 
@@ -57,8 +63,8 @@ class ColocationController extends Controller {
         return view('colocations.create', ['user' => $request->user()]);
     }
 
-    public function invite(Request $request, Colocation $colocation) {
-        $data = $request->only('email', 'user_id');
+    public function invite(InviteRequest $request, Colocation $colocation) {
+        $data = $request->validated();
         $user = $request->user();
         $colocation = $user->getActiveColocation()->first();            
         $payload = ['colocation_id' => $colocation->id, 'email' => $data['email']];
@@ -98,11 +104,8 @@ class ColocationController extends Controller {
             $q->where('user_id', $user->id);
         })->exists();
 
-        if ($hasDebt) {
-            $user->decrement('reputation');
-        } else {
-            $user->increment('reputation');
-        }
+        if ($hasDebt) $user->decrement('reputation');
+        if (!$hasDebt) $user->increment('reputation');
 
         $membership->status = ColocationStatus::inActive->value;
         $membership->save();
@@ -122,11 +125,8 @@ class ColocationController extends Controller {
                 $q->where('user_id', $member->id);
             })->exists();
 
-            if ($hasDebt) {
-                $member->decrement('reputation');
-            } else {
-                $member->increment('reputation');
-            }
+            if ($hasDebt) $user->decrement('reputation');
+            if ($hasDebt) $user->increment('reputation');
         }
 
         Membership::where('colocation_id', $colocation->id)->where('role', '!=', UsersColectionRoles::owner->value)->update(['status' => ColocationStatus::inActive->value]);

@@ -20,6 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'hasNoColocation' => hasNoColocation::class,
             'admin' => AdminMiddleware::class,
             'ban' => BanMiddleware::class,
+            'owner' => \App\Http\Middleware\OwnerMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

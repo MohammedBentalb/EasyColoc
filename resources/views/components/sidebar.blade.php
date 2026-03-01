@@ -56,13 +56,12 @@
                 <span class="material-symbols-outlined !text-[20px] text-slate-400 group-hover:text-slate-600">group</span>
                 Members
             </a>
-            @endif
-
             <a href="{{ route('categories', $activeColoc->id) }}" 
                 class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all group {{ request()->routeIs('categories') ? 'bg-primary/5 text-primary' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">
                 <span class="material-symbols-outlined !text-[20px] {{ request()->routeIs('categories') ? 'text-primary' : 'text-slate-400 group-hover:text-slate-600' }}">category</span>
                 Categories
             </a>
+            @endif
             @endif
 
             <div class="pt-4 mt-4 border-t border-slate-100">

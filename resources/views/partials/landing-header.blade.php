@@ -13,7 +13,7 @@
                 @auth
                 <div class="hidden md:flex items-center gap-6">
                     <a href="/" class="text-sm font-medium {{ Request::is('/') ? 'text-primary' : 'text-slate-600 hover:text-primary' }} transition-colors">Home</a>
-                    <a href="" class="text-sm font-medium {{ Request::routeIs('colocations') ? 'text-primary' : 'text-slate-600 hover:text-primary' }} transition-colors">Collocations</a>
+                    <a href="{{ route('colocations.home') }}" class="text-sm font-medium {{ Request::routeIs('colocations.home') ? 'text-primary' : 'text-slate-600 hover:text-primary' }} transition-colors">Colocations</a>
                 </div>
                 @endauth
             </div>
@@ -59,16 +59,21 @@
                             </div>
 
                             @if(Auth::user()->isAdmin())
-                                <a href="{{ route('home') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 hover:text-primary transition-colors">
+                                <a href="{{ route('users.index') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 hover:text-primary transition-colors">
                                     <span class="material-symbols-outlined !text-20 opacity-60">dashboard</span>
                                     Dashboard
                                 </a>
-                            @else
-                                <a href="{{ route('home') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 hover:text-primary transition-colors">
-                                    <span class="material-symbols-outlined !text-20 opacity-60">person</span>
-                                    My Profile
-                                </a>
                             @endif
+
+                            <a href="{{ route('colocations.home') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 hover:text-primary transition-colors">
+                                <span class="material-symbols-outlined !text-20 opacity-60">groups</span>
+                                Colocations
+                            </a>
+
+                            <a href="{{ route('profile') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 hover:text-primary transition-colors">
+                                <span class="material-symbols-outlined !text-20 opacity-60">person</span>
+                                My Profile
+                            </a>
 
                             <div class="border-t border-slate-100 my-1"></div>
                             

@@ -25,6 +25,7 @@ class ColocationRequest extends FormRequest
             'name' => ['required', 'string', 'min:2'],
             'address' => ['required', 'string', 'min:2'],
             'city' => ['required', 'string', 'min:2'],
+            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:10048'],
         ];
     }
     public function messages(): array {
@@ -38,6 +39,7 @@ class ColocationRequest extends FormRequest
             'city.required' => 'City Is Required',
             'city.string' => 'Wrong City Format',
             'city.min' => 'Minunum Characters Has Not Been Reached',
+            'image.max' => 'Max Size  Has Not Been Reached',
         ];
     }
 }
