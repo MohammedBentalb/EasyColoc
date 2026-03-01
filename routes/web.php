@@ -18,6 +18,7 @@ Route::middleware('guest')->group(function(){
 Route::middleware('auth')->group(function() {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/colocations', [ColocationController::class, 'home'])->name('colocations.home');
+    Route::get('/profile', [UserController::class, 'profile'])->name('profile');
     
     Route::middleware('hasNoColocation')->group(function(){
         Route::get('/colocations/create', [ColocationController::class, 'create'])->name('colocations.create');
@@ -40,6 +41,7 @@ Route::middleware('auth')->group(function() {
         Route::get('/colocations/{colocation}/expenses/create', [DepenseController::class, 'create'])->name('expenses.create');
         Route::post('/colocations/{colocation}/expenses', [DepenseController::class, 'store'])->name('expenses.store');
         Route::get('/expenses/{depense}', [DepenseController::class, 'show'])->name('expenses.show');
+        Route::post('/expenses/{depense}', [DepenseController::class, 'pay'])->name('expenses.pay');
     });
     
     Route::get('/colocations/{colocation}/add', [ColocationController::class, 'add'])->name('colocations.invite');

@@ -7,7 +7,7 @@
                     <div class="bg-primary/10 p-1.5 rounded-lg group-hover:bg-primary/20 transition-colors">
                         <span class="text-primary material-symbols-outlined font-bold !text-2xl">grid_view</span>
                     </div>
-                    <span class="text-xl font-bold tracking-tight text-slate-900">Coloc<span class="text-primary">Manager</span></span>
+                    <span class="text-xl font-bold tracking-tight text-slate-900">easy<span class="text-primary">Coloc</span></span>
                 </a>
 
                 @auth

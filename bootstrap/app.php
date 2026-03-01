@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\BanMiddleware;
 use App\Http\Middleware\HasColocation;
 use App\Http\Middleware\hasNoColocation;
 use Illuminate\Foundation\Application;
@@ -18,6 +19,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'hasColocation' => HasColocation::class,
             'hasNoColocation' => hasNoColocation::class,
             'admin' => AdminMiddleware::class,
+            'ban' => BanMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

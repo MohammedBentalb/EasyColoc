@@ -17,6 +17,8 @@ class AuthController extends Controller {
     }
     public function login(LoginRequest $request){
         $credentials = $request->only('email', 'password');
+        $bannedUser = User::where("email", $credentials['email'])->first();
+        if($bannedUser && $bannedUser->banned) return back()->withErrors(['server' => "Banned from platform"]);   
         if(!Auth::attempt($credentials)) return back()->withErrors(['server' => "wrong credentials"]);
         $request->session()->regenerate();
         return redirect()->intended('/colocations');

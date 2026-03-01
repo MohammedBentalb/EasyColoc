@@ -2,17 +2,11 @@
     class="flex items-center justify-between whitespace-nowrap border-b border-slate-200 bg-white px-6 py-3 lg:px-20"
 >
     <div class="flex items-center gap-8">
-        <a href="{{ route('home') }}" class="flex items-center gap-3 text-primary">
-            <div
-                class="size-8 flex items-center justify-center rounded-lg bg-primary text-white"
-            >
-                <span class="material-symbols-outlined">corporate_fare</span>
+        <a href="{{ route('home') }}" class="flex items-center gap-2 group">
+            <div class="bg-primary/10 p-1.5 rounded-lg group-hover:bg-primary/20 transition-colors">
+                <span class="text-primary material-symbols-outlined font-bold !text-2xl">grid_view</span>
             </div>
-            <h2
-                class="text-slate-900 text-lg font-bold leading-tight tracking-tight"
-            >
-                ColocSaaS
-            </h2>
+            <span class="text-xl font-bold tracking-tight text-slate-900">easy<span class="text-primary">Coloc</span></span>
         </a>
         <div class="hidden md:flex items-center gap-6">
             <a

@@ -2,7 +2,6 @@
     id="sidebar-container"
     class="relative"
 >
-    <!-- Mobile Backdrop -->
     <div 
         id="sidebar-backdrop"
         class="fixed inset-0 z-40 bg-slate-900/50 backdrop-blur-sm lg:hidden hidden opacity-0 transition-opacity duration-300"
@@ -13,13 +12,11 @@
         class="fixed inset-y-0 left-0 z-50 w-72 bg-white border-r border-slate-200 transform -translate-x-full transition-transform duration-300 ease-in-out lg:sticky lg:top-0 lg:h-screen lg:flex flex-col lg:translate-x-0"
     >
         <div class="h-16 flex items-center px-6 border-b border-slate-100">
-            <a href="{{ route('home') }}" class="flex items-center gap-3 text-primary">
-                <div class="size-8 flex items-center justify-center rounded-lg bg-primary text-white shadow-sm shadow-primary/20">
-                    <span class="material-symbols-outlined">corporate_fare</span>
+            <a href="{{ route('home') }}" class="flex items-center gap-2 group">
+                <div class="bg-primary/10 p-1.5 rounded-lg group-hover:bg-primary/20 transition-colors">
+                    <span class="text-primary material-symbols-outlined font-bold !text-2xl">grid_view</span>
                 </div>
-                <h2 class="text-slate-900 text-lg font-bold leading-tight tracking-tight">
-                    ColocSaaS
-                </h2>
+                <span class="text-xl font-bold tracking-tight text-slate-900">easy<span class="text-primary">Coloc</span></span>
             </a>
             <button id="close-sidebar" class="ml-auto lg:hidden text-slate-400 hover:text-slate-600">
                 <span class="material-symbols-outlined">close</span>
@@ -29,6 +26,13 @@
         <nav class="flex-1 overflow-y-auto py-6 px-4 space-y-1">
             <p class="px-2 mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Main Menu</p>
             
+            @if(auth()->user() && auth()->user()->isAdmin())
+            <a href="{{ route('users.index') }}" 
+               class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all group {{ request()->routeIs('users.index') ? 'bg-primary/5 text-primary' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">
+                <span class="material-symbols-outlined !text-[20px] {{ request()->routeIs('users.index') ? 'text-primary' : 'text-slate-400 group-hover:text-slate-600' }}">grid_view</span>
+                Dashboard
+            </a>
+            @endif
             <a href="{{ route('colocations.home') }}" 
                class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all group {{ request()->routeIs('colocations.home') ? 'bg-primary/5 text-primary' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">
                 <span class="material-symbols-outlined !text-[20px] {{ request()->routeIs('colocations.home') ? 'text-primary' : 'text-slate-400 group-hover:text-slate-600' }}">dashboard</span>
@@ -69,13 +73,6 @@
                     My Profile
                 </a>
                 
-                @if(auth()->user() && auth()->user()->is_admin)
-                <a href="{{ route('users.index') }}" 
-                   class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all group {{ request()->routeIs('users.index') ? 'bg-primary/5 text-primary' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">
-                    <span class="material-symbols-outlined !text-[20px] {{ request()->routeIs('users.index') ? 'text-primary' : 'text-slate-400 group-hover:text-slate-600' }}">admin_panel_settings</span>
-                    Manage Users
-                </a>
-                @endif
             </div>
         </nav>
 
