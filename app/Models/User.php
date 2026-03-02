@@ -26,7 +26,6 @@ class User extends Authenticatable
         'password',
         'image',
         'role_id',
-        'is_admin',
         'banned',
         'reputation'
     ];

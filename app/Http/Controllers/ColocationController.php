@@ -26,16 +26,21 @@ class ColocationController extends Controller {
         $activeColocation = $user->getActiveColocation()->first();
         $inActiveColocations = $user->getInActiveColocations()->get();
         $activeUsers = $activeColocation?->users()->wherePivot('status', ColocationStatus::active->value)->count();
-        return view('colocations.home', compact('activeColocation', 'inActiveColocations', 'user', 'activeUsers'));
+        $totalExpenses = $activeColocation ? $activeColocation->depenses()->sum('amount') : 0;
+        return view('colocations.home', compact('activeColocation', 'inActiveColocations', 'user', 'activeUsers', 'totalExpenses'));
     }
 
     public function index(Request $request, Colocation $colocation) {
         $user = $request->user();
+        $activeColoc = $user->getActiveColocation()->first();
+        if(!$activeColoc || $activeColoc->id !== $colocation->id) return redirect()->route('colocations.home')->withErrors('error', 'Access Denied');
+        
         $users = $colocation->users;
         $role = $user->getActiveColocation()->first()->pivot->role;
         $activeUsers = $colocation->users()->wherePivot('status', ColocationStatus::active->value)->count();
         $colocationUsers = $colocation->users()->wherePivot('status', ColocationStatus::active->value)->get();
-        
+        $totalExpenses = $colocation->depenses()->sum('amount');
+
         $myBalanceData = $this->balanceCalculator->balance($user);
         $myBalance = $myBalanceData['solde'];
         $myTotalPaid = $myBalanceData['totalPaid'];
@@ -45,12 +50,11 @@ class ColocationController extends Controller {
             $roommate->calculated_balance = $roommateData['solde'];
         }
 
-        return view('colocations.index', compact('user', 'colocation', 'users', 'role', 'activeUsers', 'myBalance', 'myTotalPaid', 'colocationUsers'));
+        return view('colocations.index', compact('user', 'colocation', 'users', 'role', 'activeUsers', 'myBalance', 'myTotalPaid', 'colocationUsers', 'totalExpenses'));
     }
 
     public function store(ColocationRequest $request){
         $data = $request->validated(); 
-        dd($data);       
         if ($request->hasFile('image')) $data['image'] = $request->file('image')->store('uploads/colocations', 'public');
         $user = $request->user();
         $colocation = Colocation::create($data);

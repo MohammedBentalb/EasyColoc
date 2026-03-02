@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\ColocationStatus;
 use App\DepenseStatus;
 use App\Http\Requests\DepenseCreateRequest;
+use App\Http\Requests\ExpenseFilterRequest;
 use App\Models\Colocation;
 use App\Models\Depense;
 use App\Models\Settlement;
 use Illuminate\Http\Request;
 
 class DepenseController extends Controller {
-    public function index(Request $request, Colocation $colocation) {
+    public function index(ExpenseFilterRequest $request, Colocation $colocation) {
         $filter = $request->input('filter', 'all');
         $user = $request->user();
         $query = $colocation->depenses()->with('user', 'category')

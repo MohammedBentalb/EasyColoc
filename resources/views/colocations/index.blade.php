@@ -64,7 +64,7 @@
             <div class="rounded border border-slate-200 bg-white p-5">
                 <p class="text-xs font-medium uppercase tracking-wider text-slate-500">Monthly Budget</p>
                 <div class="mt-2 flex items-baseline gap-1">
-                    <span class="text-2xl font-semibold tracking-tight">12,500</span>
+                    <span class="text-2xl font-semibold tracking-tight">{{ $totalExpenses }}</span>
                     <span class="text-sm font-medium text-slate-400">MAD</span>
                 </div>
                 <p class="mt-1 text-[11px] text-slate-400">Projected: 15,000 MAD</p>

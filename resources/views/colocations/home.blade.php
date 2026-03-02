@@ -85,8 +85,8 @@
                             </div>
                             <div class="grid grid-cols-2 lg:grid-cols-3 gap-6 py-4 border-y border-slate-100">
                                 <div>
-                                    <p class="text-[10px] font-semibold text-slate-400 uppercase">Balance</p>
-                                    <p class="text-lg font-bold text-slate-900">4,500 <span class="text-xs font-medium">MAD</span></p>
+                                    <p class="text-[10px] font-semibold text-slate-400 uppercase">total Spent</p>
+                                    <p class="text-lg font-bold text-slate-900">{{ $totalExpenses }} <span class="text-xs font-medium">MAD</span></p>
                                 </div>
                                 <div>
                                     <p class="text-[10px] font-semibold text-slate-400 uppercase">Members</p>
