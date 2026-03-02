@@ -1,6 +1,5 @@
 FROM dunglas/frankenphp:1.4-php8.4
 
-# Install basic dependencies
 RUN apt-get update && apt-get install -y \
     curl \
     unzip \
@@ -11,7 +10,6 @@ RUN apt-get update && apt-get install -y \
     git \
     && rm -rf /var/lib/apt/lists/*
 
-# Install PHP extensions
 RUN install-php-extensions \
     gd \
     intl \
@@ -21,10 +19,8 @@ RUN install-php-extensions \
     pgsql \
     pcntl
 
-# Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Install Node.js (Debian)
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs \
     && rm -rf /var/lib/apt/lists/*
@@ -33,9 +29,6 @@ WORKDIR /var/www/html
 
 # Set Permissions
 RUN chown -R www-data:www-data /var/www/html
-
-# Optional: Set user to www-data for composer/npm commands
-# USER www-data
 
 EXPOSE 80
 EXPOSE 443

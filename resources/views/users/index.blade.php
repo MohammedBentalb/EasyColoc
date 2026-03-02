@@ -128,7 +128,7 @@
                                 <span class="text-xs text-slate-600">User</span>
                             </td>
                             <td class="px-6 py-4">
-                                <span class="text-xs text-slate-500">{{ $user->created_at->format('M d, Y') }}</span>
+                                <span class="text-xs text-slate-500">{{ $user->created_at?->format('M d, Y') }}</span>
                             </td>
                             <td class="px-6 py-4 text-right">
                                 @if(!$user->is_admin)
